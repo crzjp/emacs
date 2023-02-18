@@ -360,6 +360,9 @@
   :mode (("\\.md\\'" . markdown-mode)
          ("README\\.md\\'" . gfm-mode)))
 
+(use-package rust-mode
+  :hook (rust-mode . eglot-ensure))
+
 (setq frame-resize-pixelwise t)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
