@@ -14,7 +14,7 @@ alias xf xlocate $*
 
 alias ls ls -AC --color=always --group-directories-first $*
 alias ll ls -AgGh --color=always --group-directories-first $*
-alias tree tree -C $*
+alias lt tree -C $*
 
 alias - cd -
 alias rm rm -rfI $*
@@ -29,3 +29,4 @@ alias qttr curl -s wttr.in/?0Q
 alias ping ping -c 3 gnu.org
 alias free free -h
 alias mime file -b --mime-type $*
+alias xload xrdb -load $HOME/.Xresources
