@@ -473,7 +473,7 @@ alias xf xlocate $*
 
 alias ls ls -AC --color=always --group-directories-first $*
 alias ll ls -AgGh --color=always --group-directories-first $*
-alias tree tree -C $*
+alias lt tree -C $*
 
 alias - cd -
 alias rm rm -rfI $*
@@ -488,6 +488,7 @@ alias qttr curl -s wttr.in/?0Q
 alias ping ping -c 3 gnu.org
 alias free free -h
 alias mime file -b --mime-type $*
+alias xload xrdb -load $HOME/.Xresources
 #+end_src
 
 *** Defaults
@@ -651,18 +652,6 @@ alias mime file -b --mime-type $*
 
 #+begin_src emacs-lisp
 (use-package eglot)
-#+end_src
-
-** C
-
-#+begin_src emacs-lisp
-(add-hook 'c-mode-hook 'eglot-ensure)
-#+end_src
-
-** Clojure
-
-#+begin_src emacs-lisp
-(use-package cider)
 #+end_src
 
 ** Markdown

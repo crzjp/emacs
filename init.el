@@ -352,10 +352,6 @@
 
 (use-package eglot)
 
-(add-hook 'c-mode-hook 'eglot-ensure)
-
-(use-package cider)
-
 (use-package markdown-mode
   :mode (("\\.md\\'" . markdown-mode)
          ("README\\.md\\'" . gfm-mode)))
