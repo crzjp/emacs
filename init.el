@@ -217,7 +217,7 @@
 (use-package em-alias
   :ensure nil
   :custom
-  (eshell-aliases-file "~/.emacs.d/eshell-aliases")
+  (eshell-aliases-file "~/.config/emacs/eshell-aliases")
   :config
   (eshell-read-aliases-list))
 
