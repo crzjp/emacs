@@ -29,4 +29,4 @@ alias qttr curl -s wttr.in/?0Q
 alias ping ping -c 3 gnu.org
 alias free free -h
 alias mime file -b --mime-type $*
-alias xload xrdb -load $HOME/.Xresources
+alias xload xrdb -load $XDG_CONFIG_HOME/x11/xresources
