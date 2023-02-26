@@ -134,12 +134,12 @@
 
 (use-package consult
   :after vertico
-  :config
-  (consult-customize consult-recent-file :preview-key nil)
-  (consult-customize consult-org-heading :preview-key nil)
   :bind (("C-c r" . consult-recent-file)
          :map minibuffer-mode-map
          ("C-r" . consult-history))
+  :config
+  (consult-customize consult-recent-file :preview-key nil)
+  (consult-customize consult-org-heading :preview-key nil)
   :init
   (setq-default completion-in-region-function
         (lambda (&rest args)
@@ -181,25 +181,24 @@
 (use-package esh-mode
   :ensure nil
   :hook (eshell-pre-command . eshell-save-some-history)
+  :bind (:map eshell-mode-map
+         ("C-r" . consult-history))
   :custom
   (eshell-history-size 1000)
-  (eshell-hist-ignoredups t)
-  :bind (:map eshell-mode-map
-         ("C-r" . consult-history)))
+  (eshell-hist-ignoredups t))
 
 (use-package em-prompt
   :ensure nil
-  :hook (eshell-mode . (lambda ()
-                         (setq-local outline-regexp eshell-prompt-regexp)))
+  :hook (eshell-mode . (lambda () (setq-local outline-regexp eshell-prompt-regexp)))
+  :bind (:map eshell-mode-map
+         ("C-c s" . consult-outline))
   :custom
   (eshell-prompt-regexp "^[^$\n]*\\\$ ")
   (eshell-prompt-function
    (lambda ()
      (concat
       "[" (abbreviate-file-name (eshell/pwd)) "]"
-      (propertize "$" 'invisible t) " ")))
-  :bind (:map eshell-mode-map
-         ("C-c s" . consult-outline)))
+      (propertize "$" 'invisible t) " "))))
 
 (use-package xterm-color)
 
@@ -250,14 +249,14 @@
 
 (use-package dired
   :ensure nil
+  :bind (("C-x C-d" . dired-jump)
+         :map dired-mode-map
+         ("f" . dired-create-empty-file))
   :custom
   (dired-listing-switches "-agGh --group-directories-first")
   (dired-kill-when-opening-new-dired-buffer t)
   :config
-  (diredfl-global-mode)
-  :bind (("C-x C-d" . dired-jump)
-         :map dired-mode-map
-         ("f" . dired-create-empty-file)))
+  (diredfl-global-mode))
 
 (use-package ibuffer
   :ensure nil
@@ -300,6 +299,7 @@
 
 (use-package ibuffer
   :ensure nil
+  :hook (ibuffer-mode . (lambda () (ibuffer-switch-to-saved-filter-groups "Default")))
   :custom
   (ibuffer-saved-filter-groups
    '(("Default"
@@ -329,12 +329,12 @@
       ("Games" (mode . gomoku-mode))
       ("Internal" (name . "^\*.*$"))
       ("Misc" (name . "^.*$")))))
-  (ibuffer-show-empty-filter-groups nil)
-  :hook (ibuffer-mode . (lambda ()
-                          (ibuffer-switch-to-saved-filter-groups "Default"))))
+  (ibuffer-show-empty-filter-groups nil))
 
 (use-package ibuffer
   :ensure nil
+  :hook (ibuffer-mode . ibuffer-auto-mode)
+  :bind ("C-x C-b" . ibuffer)
   :custom
   (ibuffer-formats
    '((mark modified read-only locked " "
@@ -346,9 +346,7 @@
            " " filename-and-process)
      (mark " "
            (name 16 -1)
-           " " filename)))
-  :hook (ibuffer-mode . ibuffer-auto-mode)
-  :bind ("C-x C-b" . ibuffer))
+           " " filename))))
 
 (use-package eglot)
 
@@ -372,6 +370,8 @@
 
 (use-package tab-bar
   :ensure nil
+  :bind (("C-<tab>" . tab-recent)
+         ("C-x t b" . tab-switch))
   :custom
   (tab-bar-new-button nil)
   (tab-bar-close-button nil)
@@ -379,9 +379,7 @@
   (tab-bar-border nil)
   (tab-bar-tab-name-function 'tab-bar-tab-name-truncated)
   (tab-bar-tab-name-truncated-max 15)
-  (tab-bar-show 1)
-  :bind (("C-<tab>" . tab-recent)
-         ("C-x t b" . tab-switch)))
+  (tab-bar-show 1))
 
 (defvar crz/font "Iosevka Slab 10")
 
@@ -418,27 +416,27 @@
 (use-package org
   :ensure nil
   :mode ("\\.org$" . org-mode)
+  :bind (:map org-mode-map
+         ("C-c o" . consult-org-heading))
   :custom
   (org-files-directory "~/media/docs/org")
-  (org-return-follows-link t)
-  :bind (:map org-mode-map
-         ("C-c o" . consult-org-heading)))
+  (org-return-follows-link t))
 
 (use-package org
   :ensure nil
+  :hook (org-mode . visual-line-mode)
   :custom
   (org-startup-indented t)
   (org-startup-with-inline-images t)
   (org-image-actual-width '(600))
   (org-startup-folded t)
   (org-hide-emphasis-markers t)
-  (org-ellipsis " ▾")
-  :hook (org-mode . visual-line-mode))
+  (org-ellipsis " ▾"))
 
 (use-package org-superstar
+  :hook (org-mode . org-superstar-mode)
   :custom
-  (org-superstar-headline-bullets-list '(9673 9675 10040))
-  :hook (org-mode . org-superstar-mode))
+  (org-superstar-headline-bullets-list '(9673 9675 10040)))
 
 (use-package org
   :ensure nil
@@ -453,25 +451,26 @@
 
 (use-package org
   :ensure nil
+  :bind ("C-c a" . org-agenda)
   :custom
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
-  (org-agenda-files '("~/media/docs/notas/agenda.org"))
-  :bind ("C-c a" . org-agenda))
+  (org-agenda-files '("~/media/docs/notas/agenda.org")))
 
-(use-package magit)
+(use-package magit
+  :bind ("C-c g" . magit-status))
 
 (use-package dwim-shell-command
   :defer 2
-  :config
-  (require 'dwim-shell-commands)
-  :custom
-  (dwim-shell-command-default-command nil)
   :bind (("M-!" . dwim-shell-command)
          ("C-c k" . dwim-shell-commands-kill-process)
          :map dired-mode-map
-         ("!" . dwim-shell-command)))
+         ("!" . dwim-shell-command))
+  :config
+  (require 'dwim-shell-commands)
+  :custom
+  (dwim-shell-command-default-command nil))
 
 (use-package dwim-shell-command
   :config
