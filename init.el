@@ -216,7 +216,7 @@
 (use-package em-alias
   :ensure nil
   :custom
-  (eshell-aliases-file "~/.config/emacs/eshell-aliases")
+  (eshell-aliases-file "~/.emacs.d/eshell-aliases")
   :config
   (eshell-read-aliases-list))
 
@@ -325,7 +325,11 @@
                   (mode . Man-mode)
                   (mode . Custom-mode)))
       ("Image" (mode . image-mode))
-      ("Music" (name . "\*Mingus.*"))
+      ("Music" (or (mode . mingus-help-mode)
+                   (mode . mingus-playlist-mode)
+                   (mode . mingus-browse-mode)))
+      ("Torrent" (or (mode . transmission-mode)
+                     (mode . transmission-files-mode)))
       ("Games" (mode . gomoku-mode))
       ("Internal" (name . "^\*.*$"))
       ("Misc" (name . "^.*$")))))
